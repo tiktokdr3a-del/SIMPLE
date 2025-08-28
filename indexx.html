@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PayPal SDK Test</title>
+  <link rel="stylesheet" href="pay.css">
+</head>
+<body>
+
+
+  <!-- مكان زر الدفع -->
+
+
+  <!-- تحميل SDK مع Sandbox Client ID -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AWw2pEs_uBQwWKi0VSuAjC50jjQRvYjr5Mzm-gDdVqt_5u5pNsnvixLP-Fo9qjWOkGqy1L0y_AvsVVW9&currency=USD"></script>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&components=buttons,hosted-fields&currency=USD"></script>
+
+
+<div id="paypal-button-container"></div>
+
+<script>
+  // إنشاء الطلب
+  paypal.Buttons({
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: { value: '500' }
+        }],
+        application_context: {
+          shipping_preference: "NO_SHIPPING"
+        }
+      });
+    },
+
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        alert('تم الدفع بنجاح من ' + details.payer.name.given_name);
+        // هنا ترسل المنتج الرقمي عبر الإيميل
+      });
+    }
+  }).render('#paypal-button-container');
+</script>
+
+</body>
+</html>
